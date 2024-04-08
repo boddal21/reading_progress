@@ -15,7 +15,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/bookCoverD"
+            android:id="@+id/bookCover"
             android:layout_width="200dp"
             android:layout_height="300dp"
             app:srcCompat="@drawable/dune_cover" />
@@ -27,7 +27,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/bookTitleD"
+                android:id="@+id/bookTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/alatsi"
@@ -35,7 +35,7 @@
                 android:textSize="30sp" />
 
             <TextView
-                android:id="@+id/authorD"
+                android:id="@+id/author"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/alatsi"
@@ -43,7 +43,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/pagesD"
+                android:id="@+id/pages"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/alatsi"
@@ -54,13 +54,13 @@
                 android:layout_height="50dp" />
 
             <TextView
-                android:id="@+id/readPagedD"
+                android:id="@+id/readPaged"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="read pages: " />
 
             <TextView
-                android:id="@+id/progressD"
+                android:id="@+id/progress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/alatsi"
@@ -77,7 +77,7 @@
                 android:layout_height="40dp" />
 
             <Button
-                android:id="@+id/changeCoverD"
+                android:id="@+id/changeCover"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Change cover" />
@@ -87,23 +87,59 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:layout_height="75dp" />
 
     <LinearLayout
-        android:id="@+id/dateLayoutD"
+        android:id="@+id/dateLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/startingDateD"
+            android:id="@+id/startingDate"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:fontFamily="@font/alatsi"
-            android:gravity="center"
+            android:gravity="left|center_vertical"
             android:text="Starting date:"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/startingDateDate"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/alatsi"
+            android:gravity="left|center_vertical"
+            android:text="2024.04.08"
+            android:textSize="19sp" />
+
+        <Button
+            android:id="@+id/modStartDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Modify" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dateLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/finishDate"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/alatsi"
+            android:gravity="left|center_vertical"
+            android:text="Finish date:"
             android:textSize="20sp" />
 
         <TextView
@@ -118,31 +154,59 @@
             android:textSize="19sp" />
 
         <Button
-            android:id="@+id/modStartDateD"
+            android:id="@+id/modFinishDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Modify" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/finishDateD"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:layout_weight="1"
-        android:fontFamily="@font/alatsi"
-        android:text="Finish date:"
-        android:textSize="20sp" />
+    <LinearLayout
+        android:id="@+id/pagesPerDayLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/pagesPerDayD"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/pagesPerDay"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/alatsi"
+            android:gravity="left|center_vertical"
+            android:text="Pages per day:"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/pagesPerDayText"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/alatsi"
+            android:gravity="left|center_vertical"
+            android:text="20"
+            android:textSize="19sp" />
+
+        <Button
+            android:id="@+id/modPagesPerDay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Modify" />
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="75dp" />
+
+    <Button
+        android:id="@+id/modReadPages"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:layout_weight="1"
-        android:fontFamily="@font/alatsi"
-        android:text="Pages per day:"
-        android:textSize="20sp" />
+        android:text="I read some more!" />
+
 
 </LinearLayout>

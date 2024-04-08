@@ -22,6 +22,18 @@ public class Book {
         this.progress = prog*100;
     }
 
+    public Book(String _title, String _author, int _pages){
+        this.title = _title;
+        this.author = _author;
+        this.pages = _pages;
+        this.readPages = 40;
+        this.start = new Date();
+        this.goal = new Date();
+        this.coverId = R.drawable.empty_cover;
+        double prog = (double) 40/_pages;
+        this.progress = prog*100;
+    }
+
     public String getTitle() {
         return title;
     }

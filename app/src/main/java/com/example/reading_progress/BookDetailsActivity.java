@@ -1,6 +1,9 @@
 package com.example.reading_progress;
 
 import android.os.Bundle;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.content.Intent;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,12 +16,28 @@ public class BookDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_book_details);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
+        Intent intent = getIntent();
+
+        if(intent!= null){
+            String selectedTitle = intent.getStringExtra("selectedBook");
+            if(selectedTitle != null){
+                loadBookData(selectedTitle);
+            }
+        }
+
+    }
+
+    private void loadBookData(String title){
+        Book selectedBook = BookManager.getInstance().getBook(title);
+
+        if(selectedBook != null){
+            TextView bookTitleText = findViewById(R.id.bookTitleText);
+            //ImageView cover = findViewById(R.id.bookCover);
+
+            //bookTitleText.setText(String.valueOf(selectedBook.getTitle()));
+            //cover.setImageResource(selectedBook.getCoverId());
+        }
     }
 }
