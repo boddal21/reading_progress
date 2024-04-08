@@ -10,7 +10,7 @@
     tools:context=".BookDetailsActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
@@ -42,9 +42,22 @@
                 android:text="Author"
                 android:textSize="16sp" />
 
+            <TextView
+                android:id="@+id/pagesD"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/alatsi"
+                android:text="0 pages" />
+
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="50dp" />
+
+            <TextView
+                android:id="@+id/readPagedD"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="read pages: " />
 
             <TextView
                 android:id="@+id/progressD"
@@ -52,6 +65,12 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/alatsi"
                 android:text="progress %" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
 
