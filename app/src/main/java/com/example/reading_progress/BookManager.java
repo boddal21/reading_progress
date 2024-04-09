@@ -48,4 +48,10 @@ public class BookManager {
         }
         return new Book(" ", " ", 0);
     }
+
+    public void addBook(String _title, String _author, int _pages){
+        Book newBook = new Book(_title,_author,_pages);
+        bookList.add(newBook);
+    }
+
 }

@@ -14,11 +14,11 @@ public class Book {
         this.title = _title;
         this.author = _author;
         this.pages = _pages;
-        this.readPages = 40;
+        this.readPages = 70;
         this.start = new Date();
         this.goal = new Date();
         this.coverId = _coverId;
-        double prog = (double) 40/_pages;
+        double prog = (double) this.readPages/_pages;
         this.progress = prog*100;
     }
 
@@ -26,12 +26,20 @@ public class Book {
         this.title = _title;
         this.author = _author;
         this.pages = _pages;
-        this.readPages = 40;
+        this.readPages = 70;
         this.start = new Date();
         this.goal = new Date();
         this.coverId = R.drawable.empty_cover;
-        double prog = (double) 40/_pages;
+        double prog = (double) this.readPages/_pages;
         this.progress = prog*100;
+    }
+
+    public Date getStart() {
+        return start;
+    }
+
+    public Date getGoal() {
+        return goal;
     }
 
     public String getTitle() {

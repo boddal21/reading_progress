@@ -40,6 +40,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void addNewBook(View view) {
+        Intent intent = new Intent(MainActivity.this, NewBookActivity.class);
+        startActivity(intent);
+    }
+
 //    private void populateBooks(){
 //        BookManager.getInstance().getBookList();
 //    }

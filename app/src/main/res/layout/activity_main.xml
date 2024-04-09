@@ -47,12 +47,17 @@
         android:id="@+id/addNewBookButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add a new book..." />
+        android:fontFamily="@font/alatsi"
+        android:onClick="addNewBook"
+        android:text="Add a new book..."
+        android:textSize="16sp" />
 
     <Button
         android:id="@+id/finishedBooksButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Finished books..." />
+        android:fontFamily="@font/alatsi"
+        android:text="Finished books..."
+        android:textSize="16sp" />
 
 </LinearLayout>
