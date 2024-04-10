@@ -16,6 +16,8 @@ import java.util.Date;
 
 public class BookDetailsActivity extends AppCompatActivity {
 
+    private TextView bookTitleText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +57,7 @@ public class BookDetailsActivity extends AppCompatActivity {
         Book selectedBook = BookManager.getInstance().getBook(title);
 
         if(selectedBook != null){
-            TextView bookTitle = findViewById(R.id.bookTitle);
+            bookTitleText = findViewById(R.id.bookTitle);
             TextView author = findViewById(R.id.author);
             TextView pages = findViewById(R.id.pages);
             TextView readPages = findViewById(R.id.readPaged);
@@ -73,7 +75,9 @@ public class BookDetailsActivity extends AppCompatActivity {
             int prog = (int) selectedBook.getProgress();
 
 
-            bookTitle.setText(selectedBook.getTitle());
+
+            bookTitleText.setText(selectedBook.getTitle());
+            //adjustFontSize(selectedBook.getTitle());
             author.setText(selectedBook.getAuthor());
             pages.setText(String.valueOf(selectedBook.getPages()) + " pages");
             readPages.setText("read pages: " + String.valueOf(selectedBook.getReadPages()));
@@ -84,5 +88,20 @@ public class BookDetailsActivity extends AppCompatActivity {
             cover.setImageResource(selectedBook.getCoverId());
 
         }
+
+
     }
+
+//    private void adjustFontSize(String title){
+//        int maxChar = 15;
+//
+//        int titleLen = title.length();
+//
+//        float defaultFontSize = getResources().getDimension(R.dimen.default_font_size);
+//
+//        if(titleLen > maxChar){
+//            float reducedFontSize = defaultFontSize * (maxChar/ (float) titleLen);
+//            bookTitleText.setTextSize(reducedFontSize);
+//        }
+//    }
 }
