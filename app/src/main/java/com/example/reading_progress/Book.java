@@ -98,4 +98,12 @@ public class Book {
     public void setProgress() {
         this.progress = readPages/pages;
     }
+
+    public void setStart(Date start) {
+        this.start = start;
+    }
+
+    public void setGoal(Date goal) {
+        this.goal = goal;
+    }
 }

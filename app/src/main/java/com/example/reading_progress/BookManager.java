@@ -67,7 +67,7 @@ public class BookManager {
         bookList.add(newBook);
     }
 
-//    public boolean deleteBook(Book delBook){
-//
-//    }
+    public void deleteBook(int bookId){
+        bookList.remove(bookId);
+    }
 }

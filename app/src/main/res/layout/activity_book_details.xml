@@ -137,6 +137,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:onClick="modStartDate"
                     android:text="Modify" />
             </LinearLayout>
 
@@ -228,9 +229,10 @@
                 android:layout_height="25dp" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/deleteBook"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="deleteBook"
                 android:text="Delete book" />
         </LinearLayout>
     </ScrollView>
