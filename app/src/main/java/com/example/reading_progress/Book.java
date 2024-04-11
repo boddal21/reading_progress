@@ -96,7 +96,8 @@ public class Book {
     }
 
     public void setProgress() {
-        this.progress = readPages/pages;
+        double prog = (double) this.readPages/pages;
+        this.progress = prog*100;
     }
 
     public void setStart(Date start) {

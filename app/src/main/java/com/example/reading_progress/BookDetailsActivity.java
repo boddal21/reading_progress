@@ -4,9 +4,11 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -24,16 +26,26 @@ import java.util.Date;
 
 public class BookDetailsActivity extends AppCompatActivity {
 
+
+    //CustomBaseAdapter customBaseAdapter;
+
     private TextView bookTitleText;
     Book selectedB;
     Button startDate, finDate;
     Calendar calendar;
     TextView startText, finText, ppd;
 
+    TextView readPages;
+    TextView progress;
+    ProgressBar bar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_details);
+
+        //customBaseAdapter = new CustomBaseAdapter(this, BookManager.getInstance().getBookList());
+
         startText = findViewById(R.id.startingDateDate);
         finText = findViewById(R.id.finDate);
         ppd = findViewById(R.id.pagesPerDayText);
@@ -161,9 +173,9 @@ public class BookDetailsActivity extends AppCompatActivity {
             bookTitleText = findViewById(R.id.bookTitle);
             TextView author = findViewById(R.id.author);
             TextView pages = findViewById(R.id.pages);
-            TextView readPages = findViewById(R.id.readPaged);
-            TextView progress = findViewById(R.id.progress);
-            ProgressBar bar = findViewById(R.id.progressBar);
+            readPages = findViewById(R.id.readPaged);
+            progress = findViewById(R.id.progress);
+            bar = findViewById(R.id.progressBar);
             ImageView cover = findViewById(R.id.bookCover);
             //TextView pagesPerDay = findViewById(R.id.pagesPerDayText);
             //startText = findViewById(R.id.startingDateDate);
@@ -181,7 +193,7 @@ public class BookDetailsActivity extends AppCompatActivity {
             //adjustFontSize(selectedBook.getTitle());
             author.setText(selectedBook.getAuthor());
             pages.setText(String.valueOf(selectedBook.getPages()) + " pages");
-            readPages.setText("read pages: " + String.valueOf(selectedBook.getReadPages()));
+            readPages.setText("pages read: " + String.valueOf(selectedBook.getReadPages()));
             progress.setText(String.format("%.2f",selectedBook.getProgress()) + "%");
             bar.setProgress(prog);
             startText.setText(start);
@@ -213,5 +225,49 @@ public class BookDetailsActivity extends AppCompatActivity {
                     }
                 });
         builder.create().show();
+    }
+
+    public void addReadPages(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Update read pages");
+
+        // Set up the input
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        builder.setView(input);
+
+        // Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Get the input number
+                String inputPages = input.getText().toString();
+                if (!inputPages.isEmpty()) {
+                    int pagesToAdd = Integer.parseInt(inputPages);
+                    // Update the read pages
+                    selectedB.setReadPages(pagesToAdd);
+                    // Refresh the UI
+                    loadBookData(selectedB.getBookId());
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        int prog = (int) selectedB.getProgress();
+
+        progress.setText(String.format("%.2f",selectedB.getProgress()) + "%");
+        bar.setProgress(prog);
+        readPages.setText("pages read: " + String.valueOf(selectedB.getReadPages()));
+
+        //((MainActivity) getParent()).updateListView();
+
+        //customBaseAdapter.updateBookList(BookManager.getInstance().getBookList());
+
+        builder.show();
     }
 }

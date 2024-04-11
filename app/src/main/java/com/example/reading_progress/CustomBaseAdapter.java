@@ -63,4 +63,9 @@ public class CustomBaseAdapter extends BaseAdapter {
 
         return convertView;
     }
+
+    public void updateBookList(List<Book> newList){
+        this.listBook = newList;
+        notifyDataSetChanged();
+    }
 }
