@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Book selectedBook = BookManager.getInstance().getBookList().get(position);
                 Intent intent = new Intent(MainActivity.this, BookDetailsActivity.class);
-                intent.putExtra("selectedBook", selectedBook.getTitle());
+                intent.putExtra("selectedBook", selectedBook.getBookId());
                 startActivity(intent);
             }
         });

@@ -19,6 +19,7 @@ public class NewBookActivity extends AppCompatActivity {
     }
 
     public void registerBook(View view) {
+        boolean ok = false;
 
         bookTitle = findViewById(R.id.titleInput);
         authorName = findViewById(R.id.authorInput);
@@ -28,14 +29,14 @@ public class NewBookActivity extends AppCompatActivity {
         String author = String.valueOf(authorName.getText());
         int pgs = Integer.valueOf(String.valueOf(pages.getText()));
 
-        BookManager.getInstance().addBook(title, author, pgs);
-
-        Toast.makeText(NewBookActivity.this, "Book added succesfully!", Toast.LENGTH_LONG);
-
-//        Intent intent = new Intent(MainActivity.this, NewBookActivity.class);
-//        startActivity(intent);
-
-        Intent intent = new Intent(NewBookActivity.this, MainActivity.class);
-        startActivity(intent);
+        ok = BookManager.getInstance().newBookOk(title, author);
+        if(ok){
+            BookManager.getInstance().addBook(title, author, pgs);
+            Toast.makeText(NewBookActivity.this, "Book added succesfully!", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(NewBookActivity.this, MainActivity.class);
+            startActivity(intent);
+        }else{
+            Toast.makeText(NewBookActivity.this, "You already have a book with this title and author.", Toast.LENGTH_SHORT).show();
+        }
     }
 }

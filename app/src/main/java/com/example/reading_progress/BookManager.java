@@ -1,5 +1,9 @@
 package com.example.reading_progress;
 
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -40,13 +44,22 @@ public class BookManager {
         return bookList;
     }
 
-    public Book getBook(String _title){
+    public Book getBook(int bookId){
         for(int i=0; i<bookList.size(); i++){
-            if(Objects.equals(bookList.get(i).getTitle(), _title)){
+            if(bookList.get(i).getBookId() == bookId){
                 return bookList.get(i);
             }
         }
         return new Book(" ", " ", 0);
+    }
+
+    public boolean newBookOk(String _title, String _author){
+        for(int i = 0; i < bookList.size(); i++){
+            if(bookList.get(i).getTitle().equals(_title) && bookList.get(i).getAuthor().equals(_author)){
+                return false;
+            }
+        }
+        return true;
     }
 
     public void addBook(String _title, String _author, int _pages){
@@ -54,4 +67,7 @@ public class BookManager {
         bookList.add(newBook);
     }
 
+//    public boolean deleteBook(Book delBook){
+//
+//    }
 }

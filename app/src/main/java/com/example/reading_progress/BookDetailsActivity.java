@@ -26,19 +26,18 @@ public class BookDetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         if(intent!= null){
-            String selectedTitle = intent.getStringExtra("selectedBook");
-            if(selectedTitle != null){
-                loadBookData(selectedTitle);
+            int selectedId = intent.getIntExtra("selectedBook", -1);
+            if(selectedId >= 0){
+                loadBookData(selectedId);
             }
         }
-
     }
 
     private String returnDateFormatted(Date date){
         String result = String.valueOf(date.getYear()+1900) + ".";
 
         if(date.getMonth() < 9){
-            result += "0" +  String.valueOf(date.getMonth()) + ".";
+            result += "0" +  String.valueOf(date.getMonth()+1) + ".";
         }else{
             result += String.valueOf(date.getMonth()+1) + ".";
         }
@@ -53,8 +52,8 @@ public class BookDetailsActivity extends AppCompatActivity {
         return result;
     }
 
-    private void loadBookData(String title){
-        Book selectedBook = BookManager.getInstance().getBook(title);
+    private void loadBookData(int bookId){
+        Book selectedBook = BookManager.getInstance().getBook(bookId);
 
         if(selectedBook != null){
             bookTitleText = findViewById(R.id.bookTitle);

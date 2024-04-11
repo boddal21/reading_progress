@@ -6,13 +6,16 @@ public class Book {
     //könyvCím., író., oldalszám.
     //kezdet., cél., elolvasottOldalak.
     private String title, author;
-    private int pages, readPages, coverId;
+    private int pages, readPages, coverId, bookId;
     private double progress;
     private Date start, goal;
+
+    static int count = 0;
 
     public Book(String _title, String _author, int _pages, int _coverId){
         this.title = _title;
         this.author = _author;
+        this.bookId = count++;
         this.pages = _pages;
         this.readPages = 70;
         this.start = new Date();
@@ -25,6 +28,7 @@ public class Book {
     public Book(String _title, String _author, int _pages){
         this.title = _title;
         this.author = _author;
+        this.bookId = count++;
         this.pages = _pages;
         this.readPages = 70;
         this.start = new Date();
@@ -73,6 +77,10 @@ public class Book {
     public void setReadPages(int readPages) {
         this.readPages = readPages;
         setProgress();
+    }
+
+    public int getBookId() {
+        return bookId;
     }
 
     public  int getCoverId(){
