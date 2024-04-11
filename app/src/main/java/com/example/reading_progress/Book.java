@@ -106,4 +106,8 @@ public class Book {
     public void setGoal(Date goal) {
         this.goal = goal;
     }
+
+    public int remainingPages(){
+        return pages-readPages;
+    }
 }

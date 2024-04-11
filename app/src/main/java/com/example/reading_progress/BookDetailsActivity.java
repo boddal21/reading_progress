@@ -28,7 +28,7 @@ public class BookDetailsActivity extends AppCompatActivity {
     Book selectedB;
     Button startDate, finDate;
     Calendar calendar;
-    TextView startText, finText;
+    TextView startText, finText, ppd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +36,9 @@ public class BookDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_book_details);
         startText = findViewById(R.id.startingDateDate);
         finText = findViewById(R.id.finDate);
+        ppd = findViewById(R.id.pagesPerDayText);
+        ppd.setText("...");
+
 
         Intent intent = getIntent();
 
@@ -45,6 +48,8 @@ public class BookDetailsActivity extends AppCompatActivity {
                 loadBookData(selectedId);
             }
         }
+
+        updatePPD();
 
         calendar = Calendar.getInstance();
 
@@ -71,6 +76,8 @@ public class BookDetailsActivity extends AppCompatActivity {
                         String finString = returnDateFormatted(finStart);
 
                         startText.setText(finString);
+
+                        updatePPD();
 
                         //selectedB.setStart();
 
@@ -100,12 +107,33 @@ public class BookDetailsActivity extends AppCompatActivity {
                         String finString = returnDateFormatted(finGoal);
 
                         finText.setText(finString);
+
+                        updatePPD();
+
                     }, year, month, dayOfMonth);
 
             datePick.show();
         });
     }
 
+    private double countPPD(Date startD, Date finD) {
+        long diffMillis = finD.getTime() - startD.getTime();
+
+        if (diffMillis == 0) {
+            return 0;
+        }
+
+        long days = diffMillis / (1000 * 60 * 60 * 24);
+
+        double ppd = (double) selectedB.remainingPages() / days;
+
+        return ppd;
+    }
+
+    private void updatePPD(){
+        double ppdResult = countPPD(selectedB.getStart(), selectedB.getGoal());
+        ppd.setText(String.format("%.2f", ppdResult));
+    }
     private String returnDateFormatted(Date date){
         String result = String.valueOf(date.getYear()+1900) + ".";
 
@@ -136,14 +164,16 @@ public class BookDetailsActivity extends AppCompatActivity {
             TextView readPages = findViewById(R.id.readPaged);
             TextView progress = findViewById(R.id.progress);
             ProgressBar bar = findViewById(R.id.progressBar);
+            ImageView cover = findViewById(R.id.bookCover);
+            //TextView pagesPerDay = findViewById(R.id.pagesPerDayText);
             //startText = findViewById(R.id.startingDateDate);
             //TextView finDate = findViewById(R.id.finDate);
-            ImageView cover = findViewById(R.id.bookCover);
 
             //txtProgress.setText(String.format("%.2f",book.getProgress()) + "%");
 
             String start = returnDateFormatted(selectedBook.getStart());
             String finish = returnDateFormatted(selectedBook.getGoal());
+            //double ppdResult = countPPD(selectedBook.getStart(), selectedBook.getGoal());
 
             int prog = (int) selectedBook.getProgress();
 
@@ -156,7 +186,9 @@ public class BookDetailsActivity extends AppCompatActivity {
             bar.setProgress(prog);
             startText.setText(start);
             finText.setText(finish);
+            //ppd.setText(String.format("%.2f", ppdResult));
             cover.setImageResource(selectedBook.getCoverId());
+            updatePPD();
 
         }
     }
