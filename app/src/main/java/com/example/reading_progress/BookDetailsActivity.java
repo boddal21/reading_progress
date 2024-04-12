@@ -33,10 +33,7 @@ public class BookDetailsActivity extends AppCompatActivity {
     Book selectedB;
     Button startDate, finDate;
     Calendar calendar;
-    TextView startText, finText, ppd;
-
-    TextView readPages;
-    TextView progress;
+    TextView startText, finText, ppd, readPages, progress;
     ProgressBar bar;
 
     @Override
@@ -83,17 +80,18 @@ public class BookDetailsActivity extends AppCompatActivity {
 
                         Date finStart = selectedDate.getTime();
 
-                        BookManager.getInstance().getBook(selectedB.getBookId()).setStart(finStart);
+                        if(areDatesOk(finStart, selectedB.getGoal())){
+                            BookManager.getInstance().getBook(selectedB.getBookId()).setStart(finStart);
 
-                        String finString = returnDateFormatted(finStart);
+                            String finString = returnDateFormatted(finStart);
 
-                        startText.setText(finString);
+                            startText.setText(finString);
 
-                        updatePPD();
+                            updatePPD();
+                        }else{
+                            Toast.makeText(BookDetailsActivity.this, "Start date is later than finish date.", Toast.LENGTH_SHORT).show();
+                        }
 
-                        //selectedB.setStart();
-
-                        //selectedB.setStart(finStart);
                     }, year, month, dayOfMonth);
 
             datePick.show();
@@ -114,18 +112,30 @@ public class BookDetailsActivity extends AppCompatActivity {
 
                         Date finGoal = selectedDate.getTime();
 
-                        BookManager.getInstance().getBook(selectedB.getBookId()).setGoal(finGoal);
+                        if(areDatesOk(selectedB.getStart(), finGoal)){
+                            BookManager.getInstance().getBook(selectedB.getBookId()).setGoal(finGoal);
 
-                        String finString = returnDateFormatted(finGoal);
+                            String finString = returnDateFormatted(finGoal);
 
-                        finText.setText(finString);
+                            finText.setText(finString);
 
-                        updatePPD();
-
+                            updatePPD();
+                        }else{
+                            Toast.makeText(BookDetailsActivity.this, "Finish date is earlier than start date.", Toast.LENGTH_SHORT).show();
+                        }
                     }, year, month, dayOfMonth);
 
             datePick.show();
         });
+    }
+
+    private boolean areDatesOk(Date startD, Date finD){
+        int comp = startD.compareTo(finD);
+
+        if(comp > 0){
+            return false;
+        }
+        return true;
     }
 
     private double countPPD(Date startD, Date finD) {
@@ -173,6 +183,7 @@ public class BookDetailsActivity extends AppCompatActivity {
             bookTitleText = findViewById(R.id.bookTitle);
             TextView author = findViewById(R.id.author);
             TextView pages = findViewById(R.id.pages);
+            TextView created = findViewById(R.id.createdDate);
             readPages = findViewById(R.id.readPaged);
             progress = findViewById(R.id.progress);
             bar = findViewById(R.id.progressBar);
@@ -185,6 +196,7 @@ public class BookDetailsActivity extends AppCompatActivity {
 
             String start = returnDateFormatted(selectedBook.getStart());
             String finish = returnDateFormatted(selectedBook.getGoal());
+            String _created = returnDateFormatted(selectedBook.getCreated());
             //double ppdResult = countPPD(selectedBook.getStart(), selectedBook.getGoal());
 
             int prog = (int) selectedBook.getProgress();
@@ -198,7 +210,7 @@ public class BookDetailsActivity extends AppCompatActivity {
             bar.setProgress(prog);
             startText.setText(start);
             finText.setText(finish);
-            //ppd.setText(String.format("%.2f", ppdResult));
+            created.setText("created: " + _created);
             cover.setImageResource(selectedBook.getCoverId());
             updatePPD();
 
@@ -208,18 +220,18 @@ public class BookDetailsActivity extends AppCompatActivity {
     public void deleteBook(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(BookDetailsActivity.this);
         builder.setTitle("Confirmation")
-                .setMessage("Are you sure you want to delete this book: " + selectedB.getTitle() + " by " + selectedB.getAuthor())
+                .setMessage("Are you sure you want to delete this book: " + selectedB.getTitle() + " by " + selectedB.getAuthor() + " ?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 //                        list.remove(position);
 //                        adapter.notifyDataSetChanged();
                         BookManager.getInstance().deleteBook(selectedB.getBookId());
-                        Toast.makeText(BookDetailsActivity.this, "Book deleted succefully.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(BookDetailsActivity.this, "Book deleted succefully.", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(BookDetailsActivity.this, MainActivity.class);
                         startActivity(intent);
                     }
                 })
-                .setNegativeButton("Nem", new DialogInterface.OnClickListener() {
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                     }
@@ -229,7 +241,7 @@ public class BookDetailsActivity extends AppCompatActivity {
 
     public void addReadPages(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Update read pages");
+        builder.setTitle("Update your progress:");
 
         // Set up the input
         final EditText input = new EditText(this);
@@ -244,10 +256,14 @@ public class BookDetailsActivity extends AppCompatActivity {
                 String inputPages = input.getText().toString();
                 if (!inputPages.isEmpty()) {
                     int pagesToAdd = Integer.parseInt(inputPages);
-                    // Update the read pages
-                    selectedB.setReadPages(pagesToAdd);
-                    // Refresh the UI
-                    loadBookData(selectedB.getBookId());
+                    if(pagesToAdd > selectedB.getPages()){
+                        Toast.makeText(BookDetailsActivity.this, "Too many read pages.", Toast.LENGTH_SHORT).show();
+                    }else if(pagesToAdd < 0){
+                        Toast.makeText(BookDetailsActivity.this, "Too low number of read pages.", Toast.LENGTH_SHORT).show();
+                    }else{
+                        selectedB.setReadPages(pagesToAdd);
+                        loadBookData(selectedB.getBookId());
+                    }
                 }
             }
         });
@@ -269,5 +285,56 @@ public class BookDetailsActivity extends AppCompatActivity {
         //customBaseAdapter.updateBookList(BookManager.getInstance().getBookList());
 
         builder.show();
+    }
+
+    public void modPPD(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Set amount of pages to read a day:");
+
+        // Set up the input
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        builder.setView(input);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Get the input number
+                String inputPages = input.getText().toString();
+                if (!inputPages.isEmpty()) {
+                    int pagesToRead = Integer.parseInt(inputPages);
+                    if(pagesToRead > selectedB.getPages()){
+                        Toast.makeText(BookDetailsActivity.this, "Too many pages to read.", Toast.LENGTH_SHORT).show();
+                    }else if(pagesToRead < 0){
+                        Toast.makeText(BookDetailsActivity.this, "Too few pages to read.", Toast.LENGTH_SHORT).show();
+                    }else{
+                        setDaysPages(pagesToRead);
+                    }
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+    private void setDaysPages(int _ppd){
+         int remain = selectedB.getPages() - selectedB.getReadPages();
+        int days = (int) Math.ceil((double) remain / _ppd);
+
+         Calendar calendar1 = Calendar.getInstance();
+         calendar1.setTime(selectedB.getStart());
+         calendar1.add(Calendar.DATE, days);
+         selectedB.setGoal(calendar1.getTime());
+
+         String finishDate = returnDateFormatted(selectedB.getGoal());
+         finText.setText(finishDate);
+
+         ppd.setText(String.valueOf(_ppd));
+
     }
 }

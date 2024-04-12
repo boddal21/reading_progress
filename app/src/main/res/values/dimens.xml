@@ -1,4 +1,0 @@
-<resources>
-    <!-- Define the default font size -->
-    <dimen name="default_font_size">30sp</dimen> <!-- You can adjust the value as needed -->
-</resources>

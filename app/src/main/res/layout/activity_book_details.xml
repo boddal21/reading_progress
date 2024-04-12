@@ -55,7 +55,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/alatsi"
                         android:text="Book Title"
-                        android:textSize="@dimen/default_font_size" />
+                        android:textSize="30sp" />
 
                     <TextView
                         android:id="@+id/author"
@@ -72,6 +72,15 @@
                         android:fontFamily="@font/alatsi"
                         android:text="0 pages" />
 
+                    <TextView
+                        android:id="@+id/createdDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/alatsi"
+                        android:text="created: "
+                        android:textColor="#707070"
+                        android:textSize="12sp" />
+
                     <Space
                         android:layout_width="match_parent"
                         android:layout_height="20dp"
@@ -81,6 +90,7 @@
                         android:id="@+id/readPaged"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/alatsi"
                         android:text="read pages: " />
 
                     <TextView
@@ -137,7 +147,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:onClick="modStartDate"
                     android:text="Modify" />
             </LinearLayout>
 
@@ -210,6 +219,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:onClick="modPPD"
                     android:text="Modify" />
 
             </LinearLayout>

@@ -8,7 +8,7 @@ public class Book {
     private String title, author;
     private int pages, readPages, coverId, bookId;
     private double progress;
-    private Date start, goal;
+    private Date start, goal, created;
 
     static int count = 0;
 
@@ -17,12 +17,14 @@ public class Book {
         this.author = _author;
         this.bookId = count++;
         this.pages = _pages;
-        this.readPages = 70;
+        this.readPages = 0;
         this.start = new Date();
         this.goal = new Date();
+        this.created = new Date();
         this.coverId = _coverId;
-        double prog = (double) this.readPages/_pages;
-        this.progress = prog*100;
+        this.progress = 0;
+//        double prog = (double) this.readPages/_pages;
+//        this.progress = prog*100;
     }
 
     public Book(String _title, String _author, int _pages){
@@ -30,12 +32,18 @@ public class Book {
         this.author = _author;
         this.bookId = count++;
         this.pages = _pages;
-        this.readPages = 70;
+        this.readPages = 0;
         this.start = new Date();
         this.goal = new Date();
+        this.created = new Date();
         this.coverId = R.drawable.empty_cover;
-        double prog = (double) this.readPages/_pages;
-        this.progress = prog*100;
+        this.progress = 0;
+//        double prog = (double) this.readPages/_pages;
+//        this.progress = prog*100;
+    }
+
+    public Date getCreated() {
+        return created;
     }
 
     public Date getStart() {
