@@ -119,4 +119,8 @@ public class Book {
     public int remainingPages(){
         return pages-readPages;
     }
+
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
+    }
 }
