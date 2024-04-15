@@ -5,14 +5,14 @@ import java.util.Date;
 public class Book {
     //könyvCím., író., oldalszám.
     //kezdet., cél., elolvasottOldalak.
-    private String title, author;
-    private int pages, readPages, coverId, bookId;
+    private String title, author, coverId;
+    private int pages, readPages, bookId;
     private double progress;
     private Date start, goal, created;
 
     static int count = 0;
 
-    public Book(String _title, String _author, int _pages, int _coverId){
+    public Book(String _title, String _author, int _pages, String _coverId){
         this.title = _title;
         this.author = _author;
         this.bookId = count++;
@@ -36,7 +36,7 @@ public class Book {
         this.start = new Date();
         this.goal = new Date();
         this.created = new Date();
-        this.coverId = R.drawable.empty_cover;
+        this.coverId = "empty_cover.jpg";
         this.progress = 0;
 //        double prog = (double) this.readPages/_pages;
 //        this.progress = prog*100;
@@ -91,11 +91,11 @@ public class Book {
         return bookId;
     }
 
-    public  int getCoverId(){
+    public  String getCoverId(){
         return coverId;
     }
 
-    public void setCoverId(int coverId) {
+    public void setCoverId(String coverId) {
         this.coverId = coverId;
     }
 

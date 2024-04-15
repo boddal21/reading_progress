@@ -92,7 +92,7 @@ public class BookDetailsActivity extends AppCompatActivity {
                         Date finStart = selectedDate.getTime();
 
                         if(areDatesOk(finStart, selectedB.getGoal())){
-                            BookManager.getInstance().getBook(selectedB.getBookId()).setStart(finStart);
+                            BookManager.getInstance(BookDetailsActivity.this).getBook(selectedB.getBookId()).setStart(finStart);
 
                             String finString = returnDateFormatted(finStart);
 
@@ -124,7 +124,7 @@ public class BookDetailsActivity extends AppCompatActivity {
                         Date finGoal = selectedDate.getTime();
 
                         if(areDatesOk(selectedB.getStart(), finGoal)){
-                            BookManager.getInstance().getBook(selectedB.getBookId()).setGoal(finGoal);
+                            BookManager.getInstance(BookDetailsActivity.this).getBook(selectedB.getBookId()).setGoal(finGoal);
 
                             String finString = returnDateFormatted(finGoal);
 
@@ -187,7 +187,7 @@ public class BookDetailsActivity extends AppCompatActivity {
     }
 
     private void loadBookData(int bookId){
-        Book selectedBook = BookManager.getInstance().getBook(bookId);
+        Book selectedBook = BookManager.getInstance(BookDetailsActivity.this).getBook(bookId);
         selectedB = selectedBook;
 
         if(selectedBook != null){
@@ -222,7 +222,7 @@ public class BookDetailsActivity extends AppCompatActivity {
             startText.setText(start);
             finText.setText(finish);
             created.setText("created: " + _created);
-            cover.setImageResource(selectedBook.getCoverId());
+            cover.setImageResource(String.valueOf(selectedBook.getCoverId()));
             updatePPD();
 
         }
@@ -236,7 +236,7 @@ public class BookDetailsActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
 //                        list.remove(position);
 //                        adapter.notifyDataSetChanged();
-                        BookManager.getInstance().deleteBook(selectedB.getBookId());
+                        BookManager.getInstance(BookDetailsActivity.this).deleteBook(selectedB.getBookId());
                         Toast.makeText(BookDetailsActivity.this, "Book deleted succefully.", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(BookDetailsActivity.this, MainActivity.class);
                         startActivity(intent);

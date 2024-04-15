@@ -29,9 +29,9 @@ public class NewBookActivity extends AppCompatActivity {
         String author = String.valueOf(authorName.getText());
         int pgs = Integer.valueOf(String.valueOf(pages.getText()));
 
-        ok = BookManager.getInstance().newBookOk(title, author);
+        ok = BookManager.getInstance(NewBookActivity.this).newBookOk(title, author);
         if(ok){
-            BookManager.getInstance().addBook(title, author, pgs);
+            BookManager.getInstance(NewBookActivity.this).addBook(title, author, pgs);
             Toast.makeText(NewBookActivity.this, "Book added succesfully!", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(NewBookActivity.this, MainActivity.class);
             startActivity(intent);

@@ -23,18 +23,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
-        //populateBooks();
-
         listView = (ListView) findViewById(R.id.booksList);
-        customBaseAdapter = new CustomBaseAdapter(getApplicationContext(), BookManager.getInstance().getBookList());
+        customBaseAdapter = new CustomBaseAdapter(getApplicationContext(), BookManager.getInstance(MainActivity.this).getBookList());
         listView.setAdapter(customBaseAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Book selectedBook = BookManager.getInstance().getBookList().get(position);
+                Book selectedBook = BookManager.getInstance(MainActivity.this).getBookList().get(position);
                 Intent intent = new Intent(MainActivity.this, BookDetailsActivity.class);
                 intent.putExtra("selectedBook", selectedBook.getBookId());
                 startActivity(intent);
@@ -45,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        customBaseAdapter.updateBookList(BookManager.getInstance().getBookList());
+        customBaseAdapter.updateBookList(BookManager.getInstance(MainActivity.this).getBookList());
     }
 
     public void addNewBook(View view) {

@@ -1,5 +1,6 @@
 package com.example.reading_progress;
 
+import android.content.Context;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,27 +17,28 @@ public class BookManager {
         bookList = new ArrayList<>();
     }
 
-    public static synchronized BookManager getInstance(){
+    public static synchronized BookManager getInstance(Context context){
         if(instance ==null){
             instance = new BookManager();
-            instance.loadDefaultBooks();
+            instance.loadDefaultBooks(context);
         }
         return instance;
     }
 
-    private void loadDefaultBooks(){
+    private void loadDefaultBooks(Context context){
         if(bookList.isEmpty()){
-            Book dune = new Book("Dune", "Frank Herbert",896, R.drawable.dune_cover);
-            Book emma = new Book("Emma","Jane Austen",208, R.drawable.emma_cover);
-            Book scythe = new Book("Scythe","Neal Shusterman",448,R.drawable.schyte_cover);
-            Book weWereLiars = new Book("We Were Liars","E. Lockhart",256,R.drawable.we_were_liars_cover);
-            Book city = new Book("City of Bones","Cassandra Clare",485,R.drawable.city_cover);
+            Book dune = new Book("Dune", "Frank Herbert",896, "dune_cover.jpg");
+//            Book emma = new Book("Emma","Jane Austen",208, R.drawable.emma_cover);
+//            Book scythe = new Book("Scythe","Neal Shusterman",448,R.drawable.schyte_cover);
+//            Book weWereLiars = new Book("We Were Liars","E. Lockhart",256,R.drawable.we_were_liars_cover);
+//            Book city = new Book("City of Bones","Cassandra Clare",485,R.drawable.city_cover);
 
             bookList.add(dune);
-            bookList.add(emma);
-            bookList.add(scythe);
-            bookList.add(weWereLiars);
-            bookList.add(city);
+            FileManager.copyDrawableToAppFolder(context, "dune_cover", FileManager.getAppDirectory());
+//            bookList.add(emma);
+//            bookList.add(scythe);
+//            bookList.add(weWereLiars);
+//            bookList.add(city);
         }
     }
 
