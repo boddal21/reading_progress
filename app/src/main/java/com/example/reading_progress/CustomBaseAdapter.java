@@ -1,6 +1,8 @@
 package com.example.reading_progress;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +61,15 @@ public class CustomBaseAdapter extends BaseAdapter {
         txtView.setText(book.getTitle());
         txtAuthor.setText(book.getAuthor());
         txtProgress.setText(String.format("%.2f",book.getProgress()) + "%");
-        bookCvr.setImageResource(book.getCoverId());
+
+        Bitmap bitmap = BitmapFactory.decodeFile(book.getCoverId());
+        if(bitmap!= null){
+            bookCvr.setImageBitmap(bitmap);
+        }else{
+            bookCvr.setImageResource(R.drawable.empty_cover);
+        }
+
+        //bookCvr.setImageResource(book.getCoverId());
 
         return convertView;
     }

@@ -5,7 +5,9 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.InputType;
 import android.view.View;
@@ -29,6 +31,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -212,6 +216,9 @@ public class BookDetailsActivity extends AppCompatActivity {
 
             int prog = (int) selectedBook.getProgress();
 
+
+
+
             bookTitleText.setText(selectedBook.getTitle());
             //adjustFontSize(selectedBook.getTitle());
             author.setText(selectedBook.getAuthor());
@@ -222,7 +229,14 @@ public class BookDetailsActivity extends AppCompatActivity {
             startText.setText(start);
             finText.setText(finish);
             created.setText("created: " + _created);
-            cover.setImageResource(String.valueOf(selectedBook.getCoverId()));
+
+            Bitmap bitmap = BitmapFactory.decodeFile(selectedBook.getCoverId());
+            if(bitmap != null){
+                cover.setImageBitmap(bitmap);
+            }else{
+                cover.setImageResource(R.drawable.empty_cover);
+            }
+            //cover.setImageResource(String.valueOf(selectedBook.getCoverId()));
             updatePPD();
 
         }
@@ -354,41 +368,53 @@ public class BookDetailsActivity extends AppCompatActivity {
 
     }
 
-//    public void changeCover(View view) {
-//        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
-//            return;
-//        }
-//
-//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-//            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-//        }
-//    }
+    public void changeCover(View view) {
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
+            return;
+        }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
-//            // Get the captured image
-//            Bundle extras = data.getExtras();
-//            Bitmap imageBitmap = (Bitmap) extras.get("data");
-//
-//            // Save the captured image to device storage
-//            String imagePath = saveImageToStorage(imageBitmap);
-//
-//            // Update the bookCover ImageView with the captured image
-//            ImageView bookCoverImageView = findViewById(R.id.bookCover);
-//            bookCoverImageView.setImageBitmap(imageBitmap);
-//
-//            // Update the selectedB object's cover file path
-//            //selectedB.setCoverFilePath(imagePath);
-//
-//            // Save the updated Book object back to the BookManager
-//            BookManager.getInstance().getBookList().set(selectedB.getBookId(), selectedB);
-//        }
-//    }
-//
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
+            // Get the captured image
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+            // Save the captured image to device storage
+            //String imagePath = saveImageToStorage(imageBitmap);
+
+            String extr = Environment.getExternalStorageDirectory().toString()+ File.separator + "ReadingProgressFolder";
+
+
+            try{
+                MediaStore.Images.Media.insertImage(BookDetailsActivity.this.getContentResolver(), imageBitmap, extr, "dune_cover");
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            // Update the bookCover ImageView with the captured image
+            ImageView bookCoverImageView = findViewById(R.id.bookCover);
+            bookCoverImageView.setImageBitmap(imageBitmap);
+
+            // Update the selectedB object's cover file path
+            //selectedB.setCoverFilePath(imagePath);
+
+            // Save the updated Book object back to the BookManager
+            BookManager.getInstance(BookDetailsActivity.this).getBookList().set(selectedB.getBookId(), selectedB);
+        }
+    }
+
 //    private String saveImageToStorage(Bitmap bitmap) {
 //        // Save the bitmap to a file in the device's external storage directory
 //        File directory = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
@@ -405,16 +431,16 @@ public class BookDetailsActivity extends AppCompatActivity {
 //        }
 //    }
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
-//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                // Permission granted, launch camera intent
-//                changeCover(null);
-//            } else {
-//                Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, launch camera intent
+                changeCover(null);
+            } else {
+                Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }
