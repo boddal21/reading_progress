@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Random;
 import java.util.UUID;
 
 public class Book {
@@ -15,14 +16,14 @@ public class Book {
     private Date start, goal, created;
 
 
+
     public Book(String _title, String _author, int _pages){
         this.title = _title;
         this.author = _author;
         this.pages = _pages;
-        //this.bookId = _title + _author + pages;
-        //long currentTimeMillis = System.currentTimeMillis();
-        //int uniqueId = (int) currentTimeMillis;
-        //this.bookId = ;
+        Random r1 = new Random(100);
+        Random r2 = new Random(1000);
+        this.bookId = _pages+r1.nextInt()+r2.nextInt();
         this.readPages = 0;
         this.start = new Date();
         this.goal = new Date();

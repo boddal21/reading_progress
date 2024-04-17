@@ -271,7 +271,7 @@ public class BookDetailsActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
 //                        list.remove(position);
 //                        adapter.notifyDataSetChanged();
-                        BookManager.getInstance(BookDetailsActivity.this).deleteBook(BookDetailsActivity.this ,selectedB.getBookId());
+                        BookManager.getInstance(BookDetailsActivity.this).deleteBook(BookDetailsActivity.this , selectedB.getBookId());
                         Toast.makeText(BookDetailsActivity.this, "Book deleted succefully.", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(BookDetailsActivity.this, MainActivity.class);
                         startActivity(intent);
