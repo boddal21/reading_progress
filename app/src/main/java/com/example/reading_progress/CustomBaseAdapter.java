@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.List;
 
 public class CustomBaseAdapter extends BaseAdapter {
@@ -50,8 +51,6 @@ public class CustomBaseAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.activity_custom_list_view, parent, false);
         }
 
-
-
         TextView txtView = convertView.findViewById(R.id.bookTitleText);
         TextView txtAuthor = convertView.findViewById(R.id.authorText);
         TextView txtProgress = convertView.findViewById(R.id.progressText);
@@ -60,19 +59,31 @@ public class CustomBaseAdapter extends BaseAdapter {
         Book book = listBook.get(position);
         txtView.setText(book.getTitle());
         txtAuthor.setText(book.getAuthor());
-        txtProgress.setText(String.format("%.2f",book.getProgress()) + "%");
+        txtProgress.setText(String.format("%.2f", book.getProgress()) + "%");
 
-        Bitmap bitmap = BitmapFactory.decodeFile(book.getCoverId());
-        if(bitmap!= null){
+        // Load the image from internal storage
+        Bitmap bitmap = loadImageFromInternalStorage(book.getCoverId());
+        if (bitmap != null) {
             bookCvr.setImageBitmap(bitmap);
-        }else{
+        } else {
+            // Set a default image if the image cannot be loaded
             bookCvr.setImageResource(R.drawable.empty_cover);
         }
 
-        //bookCvr.setImageResource(book.getCoverId());
-
         return convertView;
     }
+
+    // Method to load image from internal storage
+    private Bitmap loadImageFromInternalStorage(String fileName) {
+        try {
+            File filePath = new File(context.getFilesDir(), fileName);
+            return BitmapFactory.decodeFile(filePath.getAbsolutePath());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     public void updateBookList(List<Book> newList){
         this.listBook = newList;

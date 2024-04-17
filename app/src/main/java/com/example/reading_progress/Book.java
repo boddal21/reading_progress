@@ -1,45 +1,34 @@
 package com.example.reading_progress;
 
+import android.content.Context;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Date;
+import java.util.UUID;
 
 public class Book {
-    //könyvCím., író., oldalszám.
-    //kezdet., cél., elolvasottOldalak.
     private String title, author, coverId;
     private int pages, readPages, bookId;
     private double progress;
     private Date start, goal, created;
 
-    static int count = 0;
-
-    public Book(String _title, String _author, int _pages, String _coverId){
-        this.title = _title;
-        this.author = _author;
-        this.bookId = count++;
-        this.pages = _pages;
-        this.readPages = 0;
-        this.start = new Date();
-        this.goal = new Date();
-        this.created = new Date();
-        this.coverId = _coverId;
-        this.progress = 0;
-//        double prog = (double) this.readPages/_pages;
-//        this.progress = prog*100;
-    }
 
     public Book(String _title, String _author, int _pages){
         this.title = _title;
         this.author = _author;
-        this.bookId = count++;
         this.pages = _pages;
+        //this.bookId = _title + _author + pages;
+        //long currentTimeMillis = System.currentTimeMillis();
+        //int uniqueId = (int) currentTimeMillis;
+        //this.bookId = ;
         this.readPages = 0;
         this.start = new Date();
         this.goal = new Date();
         this.created = new Date();
-        this.coverId = "empty_cover.jpg";
+        this.coverId = "";
         this.progress = 0;
-//        double prog = (double) this.readPages/_pages;
-//        this.progress = prog*100;
     }
 
     public Date getCreated() {

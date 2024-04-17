@@ -44,6 +44,12 @@ public class MainActivity extends AppCompatActivity {
         customBaseAdapter.updateBookList(BookManager.getInstance(MainActivity.this).getBookList());
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        BookManager.getInstance(MainActivity.this).saveBooksToInternalStorage(getApplicationContext());
+    }
+
     public void addNewBook(View view) {
         Intent intent = new Intent(MainActivity.this, NewBookActivity.class);
         startActivity(intent);
