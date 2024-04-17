@@ -15,15 +15,14 @@ public class Book {
     private double progress;
     private Date start, goal, created;
 
-
-
     public Book(String _title, String _author, int _pages){
         this.title = _title;
         this.author = _author;
         this.pages = _pages;
         Random r1 = new Random(100);
         Random r2 = new Random(1000);
-        this.bookId = _pages+r1.nextInt()+r2.nextInt();
+        int sum = _pages+r1.nextInt()+r2.nextInt();
+        this.bookId = sum;
         this.readPages = 0;
         this.start = new Date();
         this.goal = new Date();
