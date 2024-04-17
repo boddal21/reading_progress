@@ -1,17 +1,10 @@
 package com.example.reading_progress;
 
-import android.content.Context;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Date;
-import java.util.Random;
-import java.util.UUID;
 
 public class Book {
-    private String title, author, coverId;
-    private int pages, readPages, bookId;
+    private String title, author, coverId, bookId;
+    private int pages, readPages;
     private double progress;
     private Date start, goal, created;
 
@@ -19,10 +12,11 @@ public class Book {
         this.title = _title;
         this.author = _author;
         this.pages = _pages;
-        Random r1 = new Random(100);
-        Random r2 = new Random(1000);
-        int sum = _pages+r1.nextInt()+r2.nextInt();
-        this.bookId = sum;
+//        Random r1 = new Random(100);
+//        Random r2 = new Random(1000);
+//        int sum = _pages+r1.nextInt()+r2.nextInt();
+//        this.bookId = sum;
+        this.bookId = _title + _author + pages;
         this.readPages = 0;
         this.start = new Date();
         this.goal = new Date();
@@ -76,7 +70,7 @@ public class Book {
         setProgress();
     }
 
-    public int getBookId() {
+    public String getBookId() {
         return bookId;
     }
 
@@ -109,7 +103,7 @@ public class Book {
         return pages-readPages;
     }
 
-    public void setBookId(int bookId) {
+    public void setBookId(String bookId) {
         this.bookId = bookId;
     }
 }

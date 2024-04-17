@@ -62,9 +62,9 @@ public class BookManager {
         return bookList;
     }
 
-    public Book getBook(int bookId) {
+    public Book getBook(String bookId) {
         for (int i = 0; i < bookList.size(); i++) {
-            if (bookList.get(i).getBookId() == bookId) {
+            if (bookList.get(i).getBookId().equals(bookId)) {
                 return bookList.get(i);
             }
         }
@@ -86,8 +86,15 @@ public class BookManager {
         saveBooksToInternalStorage(context);
     }
 
-    public void deleteBook(Context context, int bookId) {
-        bookList.remove(bookId);
+    public void deleteBook(Context context, String bookId) {
+        for (Book b:
+             bookList) {
+            if(b.getBookId().equals(bookId)){
+                bookList.remove(b);
+                break;
+            }
+        }
+        //bookList.remove(bookId);
         saveBooksToInternalStorage(context);
     }
 }

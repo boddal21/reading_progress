@@ -77,8 +77,8 @@ public class BookDetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         if (intent != null) {
-            int selectedId = intent.getIntExtra("selectedBook", -1);
-            if (selectedId >= 0) {
+            String selectedId = intent.getStringExtra("selectedBook");
+            if (selectedId != "") {
                 loadBookData(selectedId);
             }
         }
@@ -201,7 +201,7 @@ public class BookDetailsActivity extends AppCompatActivity {
         return result;
     }
 
-    private void loadBookData(int bookId) {
+    private void loadBookData(String bookId) {
         Book selectedBook = BookManager.getInstance(BookDetailsActivity.this).getBook(bookId);
         selectedB = selectedBook;
 
@@ -266,7 +266,7 @@ public class BookDetailsActivity extends AppCompatActivity {
     public void deleteBook(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(BookDetailsActivity.this);
         builder.setTitle("Confirmation")
-                .setMessage("Are you sure you want to delete this book: " + selectedB.getTitle() + " by " + selectedB.getAuthor() + " ?")
+                .setMessage("Are you sure you want to delete this book: " + selectedB.getTitle() + " by " + selectedB.getAuthor() + "?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 //                        list.remove(position);
