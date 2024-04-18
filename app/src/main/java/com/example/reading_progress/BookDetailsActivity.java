@@ -7,16 +7,11 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -25,17 +20,11 @@ import android.content.Intent;
 import android.widget.Toast;
 import android.Manifest;
 
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -47,7 +36,6 @@ import java.util.Date;
 public class BookDetailsActivity extends AppCompatActivity {
 
 
-    //CustomBaseAdapter customBaseAdapter;
 
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
     private static final int REQUEST_IMAGE_CAPTURE = 101;
@@ -65,8 +53,6 @@ public class BookDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_details);
-
-        //customBaseAdapter = new CustomBaseAdapter(this, BookManager.getInstance().getBookList());
 
         startText = findViewById(R.id.startingDateDate);
         finText = findViewById(R.id.finDate);
@@ -113,6 +99,8 @@ public class BookDetailsActivity extends AppCompatActivity {
                             startText.setText(finString);
 
                             updatePPD();
+
+                            BookManager.getInstance(BookDetailsActivity.this).saveBooksToInternalStorage(getApplicationContext());
                         } else {
                             Toast.makeText(BookDetailsActivity.this, "Start date is later than finish date.", Toast.LENGTH_SHORT).show();
                         }
@@ -145,6 +133,8 @@ public class BookDetailsActivity extends AppCompatActivity {
                             finText.setText(finString);
 
                             updatePPD();
+
+                            BookManager.getInstance(BookDetailsActivity.this).saveBooksToInternalStorage(getApplicationContext());
                         } else {
                             Toast.makeText(BookDetailsActivity.this, "Finish date is earlier than start date.", Toast.LENGTH_SHORT).show();
                         }
@@ -172,7 +162,7 @@ public class BookDetailsActivity extends AppCompatActivity {
 
         long days = diffMillis / (1000 * 60 * 60 * 24);
 
-        double ppd = (double) selectedB.remainingPages() / days;
+        double ppd = (double) selectedB.remainingPages() / (days);
 
         return ppd;
     }
@@ -214,22 +204,15 @@ public class BookDetailsActivity extends AppCompatActivity {
             progress = findViewById(R.id.progress);
             bar = findViewById(R.id.progressBar);
             ImageView cover = findViewById(R.id.bookCover);
-            //TextView pagesPerDay = findViewById(R.id.pagesPerDayText);
-            //startText = findViewById(R.id.startingDateDate);
-            //TextView finDate = findViewById(R.id.finDate);
-
-            //txtProgress.setText(String.format("%.2f",book.getProgress()) + "%");
 
             String start = returnDateFormatted(selectedBook.getStart());
             String finish = returnDateFormatted(selectedBook.getGoal());
             String _created = returnDateFormatted(selectedBook.getCreated());
-            //double ppdResult = countPPD(selectedBook.getStart(), selectedBook.getGoal());
 
             int prog = (int) selectedBook.getProgress();
 
 
             bookTitleText.setText(selectedBook.getTitle());
-            //adjustFontSize(selectedBook.getTitle());
             author.setText(selectedBook.getAuthor());
             pages.setText(String.valueOf(selectedBook.getPages()) + " pages");
             readPages.setText("pages read: " + String.valueOf(selectedBook.getReadPages()));
@@ -238,8 +221,6 @@ public class BookDetailsActivity extends AppCompatActivity {
             startText.setText(start);
             finText.setText(finish);
             created.setText("created: " + _created);
-
-            //setting the image from internal storage, based on selectedBook.getCoderId()
 
             String imageFileName = selectedBook.getCoverId();
             Bitmap coverBitmap = loadImageFromInternalStorage(imageFileName);
@@ -269,8 +250,6 @@ public class BookDetailsActivity extends AppCompatActivity {
                 .setMessage("Are you sure you want to delete this book: " + selectedB.getTitle() + " by " + selectedB.getAuthor() + "?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-//                        list.remove(position);
-//                        adapter.notifyDataSetChanged();
                         BookManager.getInstance(BookDetailsActivity.this).deleteBook(BookDetailsActivity.this , selectedB.getBookId());
                         Toast.makeText(BookDetailsActivity.this, "Book deleted succefully.", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(BookDetailsActivity.this, MainActivity.class);
@@ -289,16 +268,12 @@ public class BookDetailsActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Update your progress:");
 
-        // Set up the input
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_NUMBER);
         builder.setView(input);
-
-        // Set up the buttons
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Get the input number
                 String inputPages = input.getText().toString();
                 if (!inputPages.isEmpty()) {
                     int pagesToAdd = Integer.parseInt(inputPages);
@@ -309,6 +284,7 @@ public class BookDetailsActivity extends AppCompatActivity {
                     } else {
                         selectedB.setReadPages(pagesToAdd);
                         loadBookData(selectedB.getBookId());
+                        BookManager.getInstance(BookDetailsActivity.this).saveBooksToInternalStorage(getApplicationContext());
                     }
                 }
             }
@@ -326,9 +302,6 @@ public class BookDetailsActivity extends AppCompatActivity {
         bar.setProgress(prog);
         readPages.setText("pages read: " + String.valueOf(selectedB.getReadPages()));
 
-        //((MainActivity) getParent()).updateListView();
-
-        //customBaseAdapter.updateBookList(BookManager.getInstance().getBookList());
 
         builder.show();
     }
@@ -337,14 +310,12 @@ public class BookDetailsActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Set amount of pages to read a day:");
 
-        // Set up the input
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_NUMBER);
         builder.setView(input);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Get the input number
                 String inputPages = input.getText().toString();
                 if (!inputPages.isEmpty()) {
                     int pagesToRead = Integer.parseInt(inputPages);
@@ -379,13 +350,15 @@ public class BookDetailsActivity extends AppCompatActivity {
 
         Calendar calendar1 = Calendar.getInstance();
         calendar1.setTime(selectedB.getStart());
-        calendar1.add(Calendar.DATE, days);
+        calendar1.add(Calendar.DATE, (days));
         selectedB.setGoal(calendar1.getTime());
 
         String finishDate = returnDateFormatted(selectedB.getGoal());
         finText.setText(finishDate);
 
         ppd.setText(String.valueOf(_ppd));
+
+        BookManager.getInstance(BookDetailsActivity.this).saveBooksToInternalStorage(getApplicationContext());
 
     }
 
@@ -439,155 +412,6 @@ public class BookDetailsActivity extends AppCompatActivity {
                 }
             }
         }
+        BookManager.getInstance(BookDetailsActivity.this).saveBooksToInternalStorage(getApplicationContext());
     }
-
-
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
-//            // Get the captured image
-//            Bundle extras = data.getExtras();
-//            Bitmap imageBitmap = (Bitmap) extras.get("data");
-//            ImageView bookCoverImageView = findViewById(R.id.bookCover);
-//            bookCoverImageView.setImageBitmap(imageBitmap);
-//
-//            // Save the captured image to device storage
-//            //String imagePath = saveImageToStorage(imageBitmap);
-//
-//            //        File appDir = new File(Environment.getExternalStorageDirectory(), "ReadingProgress");
-////
-////        // Ensure the directory exists; if not, create it
-////        if (!appDir.exists()) {
-////            appDir.mkdirs();
-////        }
-////
-////        // Create a file to save the image
-////        String imagePath = appDir.getAbsolutePath() + "/" + "dune_cover.jpg";
-////        File imageFile = new File(imagePath);
-////
-////        // Save the bitmap to the file
-////        try (FileOutputStream fos = new FileOutputStream(imageFile)) {
-////            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-////            fos.flush();
-////            fos.close();
-////            return imagePath;
-////        } catch (IOException e) {
-////            e.printStackTrace();
-////            return null;
-////        }
-//
-//            String extr = Environment.getExternalStorageDirectory().toString()+ File.separator + "ReadingProgressFolder";
-//
-//            //selectedB.setCoverId(imagePath);
-//
-//            try{
-//                MediaStore.Images.Media.insertImage(BookDetailsActivity.this.getContentResolver(), imageBitmap, extr, "dune_cover");
-//            } catch (Exception e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
-//
-//            // Update the bookCover ImageView with the captured image
-//            //bookCoverImageView = findViewById(R.id.bookCover);
-//            bookCoverImageView.setImageBitmap(imageBitmap);
-//
-//            // Update the selectedB object's cover file path
-//            //selectedB.setCoverFilePath(imagePath);
-//
-//            // Save the updated Book object back to the BookManager
-//            BookManager.getInstance(BookDetailsActivity.this).getBookList().set(selectedB.getBookId(), selectedB);
-//
-//
-////            Bundle extras = data.getExtras();
-////            if (extras != null) {
-////                // Get the captured image bitmap
-////                Bitmap imageBitmap = (Bitmap) extras.get("data");
-////
-////                // Save the image to a file in your app's storage directory
-////                String imagePath = saveImageToStorage(imageBitmap);
-////
-////                // Update the selected book's cover file path
-////                if (selectedB != null) {
-////                    selectedB.setCoverId(imagePath);
-////
-////                    // Save the updated book back to your book list
-////                    BookManager.getInstance(BookDetailsActivity.this).getBookList().set(selectedB.getBookId(), selectedB);
-////                }
-////            }
-//
-//        }
-//    }
-
-//    private String saveImageToStorage(Bitmap bitmap){
-////        File appFolder = FileManager.getAppDirectory();
-////        if(!appFolder.exists()){
-////            appFolder.mkdirs();
-////        }
-////
-////        String filename = String.valueOf(selectedB.getTitle()) + "_cover.jpg";
-////
-////        File imageFile = new File(appFolder, filename);
-////
-////        try{
-////            FileOutputStream fos = new FileOutputStream(imageFile);
-////            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-////            fos.close();
-////            return imageFile.getAbsolutePath();
-////        }catch (IOException e){
-////            e.printStackTrace();
-////            return null;
-////        }
-//
-//        // Get the app's storage directory
-//        //File appDir = FileManager.getAppDirectory();
-//        File appDir = new File(Environment.getExternalStorageDirectory(), "ReadingProgress");
-//
-//        // Ensure the directory exists; if not, create it
-//        if (!appDir.exists()) {
-//            appDir.mkdirs();
-//        }
-//
-//        // Create a file to save the image
-//        String imagePath = appDir.getAbsolutePath() + "/" + "dune_cover.jpg";
-//        File imageFile = new File(imagePath);
-//
-//        // Save the bitmap to the file
-//        try (FileOutputStream fos = new FileOutputStream(imageFile)) {
-//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-//            fos.flush();
-//            fos.close();
-//            return imagePath;
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
-
-//    private String saveImageToStorage(Bitmap bitmap) {
-//        // Save the bitmap to a file in the device's external storage directory
-//        File directory = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-//        File imageFile = new File(directory, "custom_cover.jpg");
-//
-//        try {
-//            FileOutputStream fos = new FileOutputStream(imageFile);
-//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-//            fos.close();
-//            return imageFile.getAbsolutePath();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
-
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
-//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                // Permission granted, launch camera intent
-//                changeCover(null);
-//            } else {
-//                Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
 }

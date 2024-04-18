@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="4dp"
+    android:background="@color/yellow"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".NewBookActivity">
@@ -23,6 +24,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/alatsi"
             android:text="Add a new book:"
+            android:textColor="@color/brown"
             android:textSize="35sp" />
 
         <LinearLayout
@@ -38,7 +40,8 @@
                 android:ems="10"
                 android:fontFamily="@font/alatsi"
                 android:hint="Book title"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/brown" />
 
             <Space
                 android:layout_width="match_parent"
@@ -51,7 +54,8 @@
                 android:ems="10"
                 android:fontFamily="@font/alatsi"
                 android:hint="Author's name"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/brown" />
 
             <Space
                 android:layout_width="match_parent"
@@ -64,7 +68,8 @@
                 android:ems="10"
                 android:fontFamily="@font/alatsi"
                 android:hint="Number of pages"
-                android:inputType="number" />
+                android:inputType="number"
+                android:textColor="@color/brown" />
 
             <Space
                 android:layout_width="match_parent"
@@ -74,9 +79,12 @@
                 android:id="@+id/button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/custom_button"
                 android:fontFamily="@font/alatsi"
-                android:text="Add!"
                 android:onClick="registerBook"
+                android:text="Add!"
+                android:textAllCaps="false"
+                android:textColor="@color/yellow"
                 android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>

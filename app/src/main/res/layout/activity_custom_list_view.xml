@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/yellow"
     android:gravity="left"
     tools:context=".CustomListView">
 
@@ -26,6 +27,7 @@
             android:fontFamily="@font/alatsi"
             android:gravity="left"
             android:text="Book title"
+            android:textColor="@color/brown"
             android:textSize="24sp" />
 
         <TextView
@@ -35,6 +37,7 @@
             android:layout_marginLeft="4dp"
             android:fontFamily="@font/alatsi"
             android:text="Author"
+            android:textColor="@color/brown"
             android:textSize="16sp" />
 
         <TextView
@@ -44,6 +47,7 @@
             android:layout_marginLeft="4dp"
             android:fontFamily="@font/alatsi"
             android:text="progress"
+            android:textColor="@color/brown"
             android:textSize="12sp" />
     </LinearLayout>
 

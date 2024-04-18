@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp"
+    android:layout_height="match_parent"
+    android:background="@color/yellow"
     android:orientation="vertical"
     tools:context=".BookDetailsActivity">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_margin="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,8 +40,12 @@
                         android:id="@+id/changeCover"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/custom_button"
                         android:onClick="changeCover"
-                        android:text="Change cover" />
+                        android:text="Change cover"
+                        android:textAllCaps="false"
+                        android:textColor="@color/yellow" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -56,6 +61,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/alatsi"
                         android:text="Book Title"
+                        android:textColor="@color/brown"
                         android:textSize="30sp" />
 
                     <TextView
@@ -64,6 +70,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/alatsi"
                         android:text="Author"
+                        android:textColor="@color/brown"
                         android:textSize="16sp" />
 
                     <TextView
@@ -71,7 +78,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/alatsi"
-                        android:text="0 pages" />
+                        android:text="0 pages"
+                        android:textColor="@color/brown" />
 
                     <TextView
                         android:id="@+id/createdDate"
@@ -79,7 +87,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/alatsi"
                         android:text="created: "
-                        android:textColor="#707070"
+                        android:textColor="@color/brown"
                         android:textSize="12sp" />
 
                     <Space
@@ -92,20 +100,23 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/alatsi"
-                        android:text="read pages: " />
+                        android:text="read pages: "
+                        android:textColor="@color/brown" />
 
                     <TextView
                         android:id="@+id/progress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/alatsi"
-                        android:text="progress %" />
+                        android:text="progress %"
+                        android:textColor="@color/brown" />
 
                     <ProgressBar
                         android:id="@+id/progressBar"
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:indeterminateTint="#6F954E"/>
 
                 </LinearLayout>
 
@@ -130,6 +141,7 @@
                     android:fontFamily="@font/alatsi"
                     android:gravity="left|center_vertical"
                     android:text="Starting date:"
+                    android:textColor="@color/brown"
                     android:textSize="18sp" />
 
                 <TextView
@@ -141,14 +153,19 @@
                     android:fontFamily="@font/alatsi"
                     android:gravity="left|center_vertical"
                     android:text="2024.04.08"
+                    android:textColor="@color/brown"
                     android:textSize="17sp" />
 
                 <Button
                     android:id="@+id/modStartDate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:text="Modify" />
+                    android:background="@drawable/custom_button"
+                    android:text="Modify"
+                    android:textAllCaps="false"
+                    android:textColor="@color/yellow" />
             </LinearLayout>
 
             <LinearLayout
@@ -166,6 +183,7 @@
                     android:fontFamily="@font/alatsi"
                     android:gravity="left|center_vertical"
                     android:text="Finish date:"
+                    android:textColor="@color/brown"
                     android:textSize="18sp" />
 
                 <TextView
@@ -177,14 +195,19 @@
                     android:fontFamily="@font/alatsi"
                     android:gravity="left|center_vertical"
                     android:text="2024.04.08"
+                    android:textColor="@color/brown"
                     android:textSize="17sp" />
 
                 <Button
                     android:id="@+id/modFinishDate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:text="Modify" />
+                    android:background="@drawable/custom_button"
+                    android:text="Modify"
+                    android:textAllCaps="false"
+                    android:textColor="@color/yellow" />
             </LinearLayout>
 
             <LinearLayout
@@ -202,6 +225,7 @@
                     android:fontFamily="@font/alatsi"
                     android:gravity="left|center_vertical"
                     android:text="Pages per day:"
+                    android:textColor="@color/brown"
                     android:textSize="18sp" />
 
                 <TextView
@@ -213,15 +237,20 @@
                     android:fontFamily="@font/alatsi"
                     android:gravity="left|center_vertical"
                     android:text="20"
+                    android:textColor="@color/brown"
                     android:textSize="17sp" />
 
                 <Button
                     android:id="@+id/modPagesPerDay"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
+                    android:background="@drawable/custom_button"
                     android:onClick="modPPD"
-                    android:text="Modify" />
+                    android:text="Modify"
+                    android:textAllCaps="false"
+                    android:textColor="@color/yellow" />
 
             </LinearLayout>
 
@@ -233,8 +262,12 @@
                 android:id="@+id/modReadPages"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/custom_button"
                 android:onClick="addReadPages"
-                android:text="I read some more!" />
+                android:text="I read some more!"
+                android:textAllCaps="false"
+                android:textColor="@color/yellow" />
 
             <Space
                 android:layout_width="match_parent"
@@ -244,8 +277,12 @@
                 android:id="@+id/deleteBook"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/custom_button"
                 android:onClick="deleteBook"
-                android:text="Delete book" />
+                android:text="Delete book"
+                android:textAllCaps="false"
+                android:textColor="@color/yellow" />
         </LinearLayout>
     </ScrollView>
 

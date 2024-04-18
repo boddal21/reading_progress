@@ -18,10 +18,8 @@ public class FileManager {
     }
 
     public static void copyDrawableToAppFolder(Context context, String drawableName, File appFolder) {
-        // Check if the file already exists in the app folder
         File targetFile = new File(appFolder, drawableName);
         if (targetFile.exists()) {
-            // File already exists, no need to copy
             return;
         }
 

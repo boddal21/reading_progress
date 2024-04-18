@@ -26,7 +26,6 @@ public class BookManager {
         if (instance == null) {
             instance = new BookManager();
             instance.loadBooksFromInternalStorage(context);
-            //instance.loadIdCountFromInternalStorage(context);
         }
         return instance;
     }
@@ -94,7 +93,6 @@ public class BookManager {
                 break;
             }
         }
-        //bookList.remove(bookId);
         saveBooksToInternalStorage(context);
     }
 }

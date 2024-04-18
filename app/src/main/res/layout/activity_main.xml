@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:layout_margin="4dp"
     android:layout_marginStart="4dp"
+    android:background="@color/yellow"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -16,6 +17,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/alatsi"
         android:text="Books in progress..."
+        android:textColor="@color/brown"
         android:textSize="34sp" />
 
     <Space
@@ -28,15 +30,15 @@
         android:layout_height="0dp"
         android:layout_weight="2" />
 
-<!--    <ScrollView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_margin="4dp"-->
-<!--        android:layout_weight="2"-->
-<!--        android:contentDescription="My book covers">-->
+    <!--    <ScrollView-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:layout_margin="4dp"-->
+    <!--        android:layout_weight="2"-->
+    <!--        android:contentDescription="My book covers">-->
 
 
-<!--    </ScrollView>-->
+    <!--    </ScrollView>-->
 
 
     <Space
@@ -47,17 +49,13 @@
         android:id="@+id/addNewBookButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/custom_button"
         android:fontFamily="@font/alatsi"
         android:onClick="addNewBook"
         android:text="Add a new book..."
+        android:textAllCaps="false"
+        android:textColor="@color/yellow"
         android:textSize="16sp" />
 
-    <Button
-        android:id="@+id/finishedBooksButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/alatsi"
-        android:text="Finished books..."
-        android:textSize="16sp" />
 
 </LinearLayout>

@@ -1,5 +1,4 @@
 package com.example.reading_progress;
-//package com.example.customlistview;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,8 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
-    //List<Book> bookList = new ArrayList<>();
 
     ListView listView;
     CustomBaseAdapter customBaseAdapter;
@@ -55,11 +52,4 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-//    public void updateListView(){
-//        customBaseAdapter.updateBookList(BookManager.getInstance().getBookList());
-//    }
-
-//    private void populateBooks(){
-//        BookManager.getInstance().getBookList();
-//    }
 }

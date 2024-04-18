@@ -16,17 +16,13 @@ import java.util.List;
 public class CustomBaseAdapter extends BaseAdapter {
 
     Context context;
-    //String listBooks[];
-    //int listCovers[];
     List<Book> listBook;
     LayoutInflater inflater;
 
 
     public CustomBaseAdapter(Context ctx, List<Book> bookList){
-        //int [] bookCovers
         this.context = ctx;
         this.listBook = bookList;
-        //this.listCovers = bookCovers;
         inflater = LayoutInflater.from(ctx);
     }
 
@@ -61,19 +57,16 @@ public class CustomBaseAdapter extends BaseAdapter {
         txtAuthor.setText(book.getAuthor());
         txtProgress.setText(String.format("%.2f", book.getProgress()) + "%");
 
-        // Load the image from internal storage
         Bitmap bitmap = loadImageFromInternalStorage(book.getCoverId());
         if (bitmap != null) {
             bookCvr.setImageBitmap(bitmap);
         } else {
-            // Set a default image if the image cannot be loaded
             bookCvr.setImageResource(R.drawable.empty_cover);
         }
 
         return convertView;
     }
 
-    // Method to load image from internal storage
     private Bitmap loadImageFromInternalStorage(String fileName) {
         try {
             File filePath = new File(context.getFilesDir(), fileName);
