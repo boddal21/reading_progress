@@ -5,7 +5,6 @@
     android:id="@+id/newBookLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="4dp"
     android:background="@color/yellow"
     android:gravity="center"
     android:orientation="vertical"
@@ -14,7 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="9dp"
         android:orientation="vertical">
 
         <TextView
