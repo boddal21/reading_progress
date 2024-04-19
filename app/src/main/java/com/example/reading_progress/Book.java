@@ -14,8 +14,16 @@ public class Book {
         this.pages = _pages;
         this.bookId = _title + _author + pages;
         this.readPages = 0;
-        this.start = new Date();
-        this.goal = new Date();
+        Date sd = new Date();
+        sd.setHours(0);
+        sd.setMinutes(0);
+        sd.setSeconds(0);
+        this.start = sd;
+        Date fd = new Date();
+        sd.setHours(0);
+        sd.setMinutes(0);
+        sd.setSeconds(0);
+        this.goal = fd;
         this.created = new Date();
         this.coverId = "";
         this.progress = 0;
@@ -88,10 +96,16 @@ public class Book {
     }
 
     public void setStart(Date start) {
+//        start.setHours(0);
+//        start.setMinutes(0);
+//        start.setSeconds(0);
         this.start = start;
     }
 
     public void setGoal(Date goal) {
+//        goal.setHours(0);
+//        goal.setMinutes(0);
+//        goal.setSeconds(0);
         this.goal = goal;
     }
 

@@ -34,13 +34,10 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class BookDetailsActivity extends AppCompatActivity {
-
-
-
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
     private static final int REQUEST_IMAGE_CAPTURE = 101;
-    private static int REQUEST_CODE = 100;
-    OutputStream outputStream;
+    private Date sd, fd;
+
 
     private TextView bookTitleText;
     Book selectedB;
@@ -59,6 +56,9 @@ public class BookDetailsActivity extends AppCompatActivity {
         ppd = findViewById(R.id.pagesPerDayText);
         ppd.setText("...");
 
+        sd = new Date();
+        fd = new Date();
+
 
         Intent intent = getIntent();
 
@@ -66,6 +66,8 @@ public class BookDetailsActivity extends AppCompatActivity {
             String selectedId = intent.getStringExtra("selectedBook");
             if (selectedId != "") {
                 loadBookData(selectedId);
+                sd = selectedB.getStart();
+                fd = selectedB.getGoal();
             }
         }
 
@@ -75,79 +77,12 @@ public class BookDetailsActivity extends AppCompatActivity {
 
         startDate = findViewById(R.id.modStartDate);
         finDate = findViewById(R.id.modFinishDate);
-
-        startDate.setOnClickListener(v -> {
-            int year = calendar.get(Calendar.YEAR);
-            int month = calendar.get(Calendar.MONTH);
-            int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-
-            DatePickerDialog datePick = new DatePickerDialog(BookDetailsActivity.this,
-                    (view, year1, month1, dayOfMonth1) -> {
-                        Calendar selectedDate = Calendar.getInstance();
-
-                        selectedDate.set(Calendar.YEAR, year1);
-                        selectedDate.set(Calendar.MONTH, month1);
-                        selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth1);
-
-                        Date finStart = selectedDate.getTime();
-
-                        if (areDatesOk(finStart, selectedB.getGoal())) {
-                            BookManager.getInstance(BookDetailsActivity.this).getBook(selectedB.getBookId()).setStart(finStart);
-
-                            String finString = returnDateFormatted(finStart);
-
-                            startText.setText(finString);
-
-                            updatePPD();
-
-                            BookManager.getInstance(BookDetailsActivity.this).saveBooksToInternalStorage(getApplicationContext());
-                        } else {
-                            Toast.makeText(BookDetailsActivity.this, "Start date is later than finish date.", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }, year, month, dayOfMonth);
-
-            datePick.show();
-        });
-
-        finDate.setOnClickListener(v -> {
-            int year = calendar.get(Calendar.YEAR);
-            int month = calendar.get(Calendar.MONTH);
-            int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-
-            DatePickerDialog datePick = new DatePickerDialog(BookDetailsActivity.this,
-                    (view, year1, month1, dayOfMonth1) -> {
-                        Calendar selectedDate = Calendar.getInstance();
-
-                        selectedDate.set(Calendar.YEAR, year1);
-                        selectedDate.set(Calendar.MONTH, month1);
-                        selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth1);
-
-                        Date finGoal = selectedDate.getTime();
-
-                        if (areDatesOk(selectedB.getStart(), finGoal)) {
-                            BookManager.getInstance(BookDetailsActivity.this).getBook(selectedB.getBookId()).setGoal(finGoal);
-
-                            String finString = returnDateFormatted(finGoal);
-
-                            finText.setText(finString);
-
-                            updatePPD();
-
-                            BookManager.getInstance(BookDetailsActivity.this).saveBooksToInternalStorage(getApplicationContext());
-                        } else {
-                            Toast.makeText(BookDetailsActivity.this, "Finish date is earlier than start date.", Toast.LENGTH_SHORT).show();
-                        }
-                    }, year, month, dayOfMonth);
-
-            datePick.show();
-        });
     }
 
     private boolean areDatesOk(Date startD, Date finD) {
         int comp = startD.compareTo(finD);
 
-        if (comp > 0) {
+        if (comp >= 0) {
             return false;
         }
         return true;
@@ -157,10 +92,14 @@ public class BookDetailsActivity extends AppCompatActivity {
         long diffMillis = finD.getTime() - startD.getTime();
 
         if (diffMillis == 0) {
-            return 0;
+            return selectedB.remainingPages();
         }
 
         long days = diffMillis / (1000 * 60 * 60 * 24);
+
+        if (days == 0) {
+            return selectedB.remainingPages();
+        }
 
         double ppd = (double) selectedB.remainingPages() / (days);
 
@@ -168,7 +107,7 @@ public class BookDetailsActivity extends AppCompatActivity {
     }
 
     private void updatePPD() {
-        double ppdResult = countPPD(selectedB.getStart(), selectedB.getGoal());
+        double ppdResult = countPPD(sd, fd);
         ppd.setText(String.format("%.2f", ppdResult));
     }
 
@@ -252,8 +191,9 @@ public class BookDetailsActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         BookManager.getInstance(BookDetailsActivity.this).deleteBook(BookDetailsActivity.this , selectedB.getBookId());
                         Toast.makeText(BookDetailsActivity.this, "Book deleted succefully.", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(BookDetailsActivity.this, MainActivity.class);
-                        startActivity(intent);
+                        finish();
+//                        Intent intent = new Intent(BookDetailsActivity.this, MainActivity.class);
+//                        startActivity(intent);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -413,5 +353,81 @@ public class BookDetailsActivity extends AppCompatActivity {
             }
         }
         BookManager.getInstance(BookDetailsActivity.this).saveBooksToInternalStorage(getApplicationContext());
+    }
+
+    public void modStart(View _view) {
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePick = new DatePickerDialog(BookDetailsActivity.this,
+                    (view, year1, month1, dayOfMonth1) -> {
+                        Calendar selectedDate = Calendar.getInstance();
+
+                        selectedDate.set(Calendar.YEAR, year1);
+                        selectedDate.set(Calendar.MONTH, month1);
+                        selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth1);
+
+                        Date finStart = selectedDate.getTime();
+
+                        finStart.setHours(0);
+                        finStart.setMinutes(0);
+                        finStart.setSeconds(0);
+
+                        if (areDatesOk(finStart, selectedB.getGoal())) {
+                            BookManager.getInstance(BookDetailsActivity.this).getBook(selectedB.getBookId()).setStart(finStart);
+                            sd = finStart;
+                            String finString = returnDateFormatted(finStart);
+
+                            startText.setText(finString);
+
+                            updatePPD();
+
+                            BookManager.getInstance(BookDetailsActivity.this).saveBooksToInternalStorage(getApplicationContext());
+                        } else {
+                            Toast.makeText(BookDetailsActivity.this, "Start date is later than finish date.", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }, year, month, dayOfMonth);
+
+            datePick.show();
+    }
+
+    public void modFin(View _view) {
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePick = new DatePickerDialog(BookDetailsActivity.this,
+                    (view, year1, month1, dayOfMonth1) -> {
+                        Calendar selectedDate = Calendar.getInstance();
+
+                        selectedDate.set(Calendar.YEAR, year1);
+                        selectedDate.set(Calendar.MONTH, month1);
+                        selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth1);
+
+                        Date finGoal = selectedDate.getTime();
+
+                        finGoal.setHours(0);
+                        finGoal.setMinutes(0);
+                        finGoal.setSeconds(0);
+
+                        if (areDatesOk(selectedB.getStart(), finGoal)) {
+                            BookManager.getInstance(BookDetailsActivity.this).getBook(selectedB.getBookId()).setGoal(finGoal);
+
+                            fd = finGoal;
+
+                            String finString = returnDateFormatted(finGoal);
+
+                            finText.setText(finString);
+
+                            updatePPD();
+
+                            BookManager.getInstance(BookDetailsActivity.this).saveBooksToInternalStorage(getApplicationContext());
+                        } else {
+                            Toast.makeText(BookDetailsActivity.this, "Finish date is earlier than start date.", Toast.LENGTH_SHORT).show();
+                        }
+                    }, year, month, dayOfMonth);
+            datePick.show();
     }
 }

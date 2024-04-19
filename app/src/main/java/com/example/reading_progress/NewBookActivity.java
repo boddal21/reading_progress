@@ -33,9 +33,12 @@ public class NewBookActivity extends AppCompatActivity {
         if(ok){
             BookManager.getInstance(NewBookActivity.this).addBook(NewBookActivity.this, title, author, pgs);
             Toast.makeText(NewBookActivity.this, "Book added succesfully!", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(NewBookActivity.this, MainActivity.class);
             BookManager.getInstance(NewBookActivity.this).saveBooksToInternalStorage(getApplicationContext());
-            startActivity(intent);
+
+            finish();
+
+            //Intent intent = new Intent(NewBookActivity.this, MainActivity.class);
+            //startActivity(intent);
         }else{
             Toast.makeText(NewBookActivity.this, "You already have a book with this title and author.", Toast.LENGTH_SHORT).show();
         }

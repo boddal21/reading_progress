@@ -164,6 +164,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/custom_button"
                     android:text="Modify"
+                    android:onClick="modStart"
                     android:textAllCaps="false"
                     android:textColor="@color/yellow" />
             </LinearLayout>
@@ -206,6 +207,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/custom_button"
                     android:text="Modify"
+                    android:onClick="modFin"
                     android:textAllCaps="false"
                     android:textColor="@color/yellow" />
             </LinearLayout>
